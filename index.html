@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#090d15">
+    <meta name="description" content="A 100-level moonlit stealth adventure. Uncover the assassin's origin, master lunar powers, and face the Dawncleaver.">
+    <title>Moonblade — A Shadow's Oath</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="game-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Moonblade home">
+          <span class="brand-mark" aria-hidden="true">☾</span>
+          <span>MOON<span class="brand-light">BLADE</span></span>
+        </a>
+        <div class="mission-tag"><span class="live-dot"></span> <span id="district-label">NIGHTFALL DISTRICT</span> <span class="tag-divider">/</span> <span id="mission-status">INFILTRATION</span></div>
+        <button id="pause-button" class="icon-button" aria-label="Pause game" title="Pause (Esc)">Ⅱ</button>
+      </header>
+
+      <section class="game-frame" aria-label="Moonblade stealth game">
+        <canvas id="game-canvas" width="1000" height="650" aria-label="Top-down stealth game map"></canvas>
+
+        <div class="hud hud-top">
+          <div class="hud-card level-card">
+            <span class="hud-label">CAMPAIGN <b id="level-number">001</b> <span class="level-total">/ 100</span></span>
+            <span class="chapter-name" id="chapter-name">NIGHTFALL DISTRICT</span>
+          </div>
+          <div class="hud-card takedown-card">
+            <span class="hud-label" id="objective-label">WARDENS REMAINING</span>
+            <span class="guard-count"><span id="guard-count">04</span><span class="count-divider" id="guard-total">/ 04</span></span>
+            <div class="progress-track"><span id="objective-progress"></span></div>
+          </div>
+          <div class="hud-card health-card" id="health-card">
+            <span class="hud-label">NOCT'S VITALITY</span>
+            <span id="health-hearts" class="health-hearts">♥ ♥ ♥ ♥</span>
+          </div>
+          <div class="alert-card" id="alert-card">
+            <span class="alert-eye" aria-hidden="true">◉</span>
+            <div class="alert-copy"><span class="hud-label">EXPOSURE</span><span id="alert-label">UNSEEN</span></div>
+            <div class="alert-meter"><span id="alert-meter"></span></div>
+          </div>
+          <div class="boss-card" id="boss-card" hidden>
+            <div class="boss-name-row"><span>ARCHON VAEL</span><span>THE DAWNCLEAVER</span></div>
+            <div class="boss-track"><span id="boss-health"></span></div>
+          </div>
+        </div>
+
+        <div class="hud hud-bottom">
+          <div class="powerup-strip">
+            <span class="powerup-label">RELICS</span>
+            <span id="powerup-list">03</span>
+            <span class="powerup-caption">UNLOCKED</span>
+          </div>
+          <div class="ability-strip">
+            <div class="ability" id="decoy-status"><kbd>Q</kbd><span><b>MOONSTONE</b><small>lure nearby wardens</small></span><i class="ability-ready">READY</i></div>
+            <div class="ability" id="cloak-status"><kbd>E</kbd><span><b>VEIL</b><small>hide from sight</small></span><i class="ability-ready">READY</i></div>
+            <div class="ability" id="dash-status"><kbd>⇧</kbd><span><b>SHADOW DASH</b><small>quick burst of speed</small></span><i class="ability-ready">READY</i></div>
+            <div class="ability locked" id="pulse-status"><kbd>R</kbd><span><b>DUSK PULSE</b><small>stagger nearby foes</small></span><i class="ability-ready">LV 15</i></div>
+          </div>
+          <div class="bottom-hint"><span class="hint-key">SPACE</span> STRIKE <span class="hint-separator">·</span> <span class="hint-key">ESC</span> PAUSE</div>
+        </div>
+
+        <div class="veil-glow" id="veil-glow"></div>
+        <div class="screen-overlay" id="screen-overlay">
+          <div class="overlay-card tutorial-card">
+            <div class="eyebrow" id="overlay-eyebrow"><span class="eyebrow-line"></span> THE NIGHT IS YOURS <span class="eyebrow-line"></span></div>
+            <div class="moon-emblem" aria-hidden="true">☾</div>
+            <h1 id="overlay-title">A shadow's<br><em>oath.</em></h1>
+            <p class="overlay-copy" id="overlay-copy">Noct was found beneath an eclipsed moon, with a living shadow and a shard for a heart. One hundred contracts stand between them and the truth.</p>
+            <div class="tutorial-controls">
+              <div class="control-row"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>Move through the district</span></div>
+              <div class="control-row"><span class="mouse-key">MOUSE</span><span class="control-text">Aim your crescent blade</span></div>
+              <div class="control-row"><kbd>SPACE</kbd><span class="control-text">Strike a nearby warden</span></div>
+              <div class="control-row"><kbd>SHIFT</kbd><span class="control-text">Dash out of danger</span></div>
+              <div class="control-row"><kbd>Q</kbd><span class="control-text">Throw a moonstone to lure</span></div>
+              <div class="control-row"><kbd>E</kbd><span class="control-text">Fade into the veil</span></div>
+              <div class="control-row"><kbd>R</kbd><span class="control-text">Unlock Dusk Pulse at level 15</span></div>
+            </div>
+            <div class="tip-line" id="tip-line"><span>✦</span> Stay behind a warden or use cover to remain unseen.</div>
+            <button class="primary-button" id="start-button"><span id="start-label">ENTER THE DISTRICT</span><span aria-hidden="true">↗</span></button>
+            <span class="overlay-footnote">BEST EXPERIENCED WITH A KEYBOARD</span>
+          </div>
+        </div>
+
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      </section>
+
+      <footer class="footer">
+        <span>AN ORIGINAL STEALTH ARCADE GAME</span>
+        <span class="footer-right"><span class="footer-moon">☾</span> 100 LEVELS · ONE HIDDEN ORIGIN · ONE FINAL DUEL</span>
+      </footer>
+    </main>
+    <script src="game.js"></script>
+  </body>
+</html>
